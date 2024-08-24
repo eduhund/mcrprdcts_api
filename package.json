@@ -1,0 +1,19 @@
+{
+  "name": "mcrprdcts_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Roman Nebel",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.5",
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2"
+  }
+}
