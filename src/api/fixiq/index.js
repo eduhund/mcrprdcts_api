@@ -1,15 +1,20 @@
 import { Router } from "express";
 
-import { users } from "../../storage/index.js";
+import { USERS } from "../../services/mongo/collections.js";
 
 const fixiq = Router();
 
-fixiq.get("/check_subscription", (req, res) => {
-  const { email } = req.body;
+fixiq.get("/check_subscription", async (req, res) => {
+  const { email } = req.query;
 
-  const user = users.find((user) => user.email === email && user.isActive);
+  if (!email) {
+    res.sendStatus(400);
+    return;
+  }
 
-  if (user) {
+  const user = await USERS.findOne({ email });
+
+  if (user && user.isActive) {
     res.json({ access: true });
   } else {
     res.json({ access: false });
