@@ -21,13 +21,17 @@ jobs:
       - name: Connect to remote server and deploy
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.eH1_SSH_SERVER }} << 'EOF'
-            cd servers/mcrprdcts
 
-            docker container kill mcrprdcts01
+            CONTAINER_NAME=mcrprdcts01
             
+            if [ $(docker ps -q -f name=$CONTAINER_NAME) ]; then
+              docker stop $CONTAINER_NAME
+              docker rm $CONTAINER_NAME
+            fi
+            cd servers/mcrprdcts
             docker build -t mcrprdcts . 
-
-            docker run -e NODE_ENV=production -e PORT=3001 -e DB=${{ secrets.DB }} -p 3001:3001 --name mcrprdcts01 mcrprdcts
+            docker run -e NODE_ENV=production -e PORT=3001 -e DB=${{ secrets.DB }} -p 3001:3001 --name $CONTAINER_NAME mcrprdcts
+            docker system prune -f
           EOF
         env:
           DOCKER_HOST: ssh://${{ secrets.eH1_SSH_SERVER }}
