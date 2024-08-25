@@ -23,7 +23,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.eH1_SSH_SERVER }} << 'EOF'
             cd servers/mcrprdcts
 
-            sudo docker container kill mcrprdcts01
+            docker container kill mcrprdcts01
             
             docker build -t mcrprdcts . 
 
