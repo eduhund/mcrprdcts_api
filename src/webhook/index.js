@@ -1,10 +1,10 @@
 import { Router } from "express";
 
-import { users } from "../storage/index.js";
+import { USERS } from "../services/mongo/collections.js";
 
 const webhook = Router();
 
-webhook.post("/:id", (req, res) => {
+webhook.post("/:id", async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
@@ -16,7 +16,7 @@ webhook.post("/:id", (req, res) => {
         req.body;
 
       if (subscription_status === "active") {
-        users.push({
+        USERS.insertOne({
           email,
           purchase_id,
           subscription_id,
@@ -24,12 +24,8 @@ webhook.post("/:id", (req, res) => {
         });
       }
 
-      if (subscription_status === "cancelled") {
-        users = users.map((user) =>
-          user.subscription_id === subscription_id
-            ? { ...user, isActive: false }
-            : user
-        );
+      if (subscription_status === "canceled") {
+        await USERS.findOneAndUpdate({ email }, { $set: { isActive: false } });
       }
 
       res.sendStatus(200);
