@@ -6,7 +6,7 @@ const db = new MongoClient(DB);
 
 async function startDatabase() {
   try {
-    client.connect();
+    db.connect();
   } catch {
     console.error("Can't connect to the DB cluster!");
   }
