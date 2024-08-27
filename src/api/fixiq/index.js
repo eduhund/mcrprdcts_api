@@ -15,7 +15,7 @@ fixiq.get("/check_subscription", async (req, res) => {
     }
   }
 
-  if (!user_id || email === "") {
+  if (!user_id) {
     res.sendStatus(400);
     return;
   }
