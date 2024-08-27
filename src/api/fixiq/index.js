@@ -5,19 +5,32 @@ import { USERS } from "../../services/mongo/collections.js";
 const fixiq = Router();
 
 fixiq.get("/check_subscription", async (req, res) => {
-  const { email } = req.query;
+  const { user_id, email } = req.query;
 
-  if (!email) {
+  function sendResponse(user) {
+    if (user && user.isActive) {
+      res.json({ access: true });
+    } else {
+      res.json({ access: false });
+    }
+  }
+
+  if (!user_id || email === "") {
     res.sendStatus(400);
     return;
   }
 
-  const user = await USERS.findOne({ email });
+  if (email) {
+    const user = await USERS.findOneAndUpdate(
+      { email },
+      { figmaUserId: user_id }
+    );
 
-  if (user && user.isActive) {
-    res.json({ access: true });
+    sendResponse(user);
   } else {
-    res.json({ access: false });
+    const user = await USERS.findOne({ figmaUserId });
+
+    sendResponse(user);
   }
 });
 
