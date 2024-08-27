@@ -28,7 +28,7 @@ fixiq.get("/check_subscription", async (req, res) => {
 
     sendResponse(user);
   } else {
-    const user = await USERS.findOne({ figmaUserId });
+    const user = await USERS.findOne({ figmaUserId: user_id });
 
     sendResponse(user);
   }
