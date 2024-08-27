@@ -14,6 +14,7 @@ fixiq.get("/check_subscription", async (req, res) => {
       res.json({ access: false });
     }
   }
+  console.log(user_id);
 
   if (!user_id) {
     res.sendStatus(400);
