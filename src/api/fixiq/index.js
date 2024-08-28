@@ -14,7 +14,6 @@ fixiq.get("/check_subscription", async (req, res) => {
       res.json({ access: false });
     }
   }
-  console.log(user_id);
 
   if (!user_id) {
     res.sendStatus(400);
@@ -24,7 +23,11 @@ fixiq.get("/check_subscription", async (req, res) => {
   if (email) {
     const user = await USERS.findOneAndUpdate(
       { email },
-      { figmaUserId: user_id }
+      {
+        $set: {
+          figmaUserId: user_id,
+        },
+      }
     );
 
     sendResponse(user);
