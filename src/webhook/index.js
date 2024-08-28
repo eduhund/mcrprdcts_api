@@ -14,7 +14,7 @@ webhook.post("/:id", async (req, res) => {
     case "lvuoig67rcoh": // Gumroad
       const { short_product_id } = req.body;
       switch (short_product_id) {
-        case "yigpuc": // Fixiq
+        case "ttvvd": // Fixiq
           const {
             email,
             subscription_id,
