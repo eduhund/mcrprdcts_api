@@ -20,9 +20,7 @@ jobs:
 
       - name: Copy files to server
         run: |
-          cd servers
-          ls
-          scp -r -o StrictHostKeyChecking=no ./* ${{ secrets.eH1_SSH_SERVER }}:/servers/mcrprdcts/
+          scp -r -o StrictHostKeyChecking=no ${{ secrets.eH1_SSH_SERVER }}:/servers/mcrprdcts/ ./*
         env:
           SSH_PRIVATE_KEY: ${{ secrets.eH1_SSH_KEY }}
 
