@@ -18,6 +18,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.eH1_SSH_KEY }}
 
+      - name: Copy files to server
+        run: |
+          scp -r -o StrictHostKeyChecking=no ./* ${{ secrets.eH1_SSH_SERVER }}/servers/mcrprdcts
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.eH1_SSH_KEY }}
+
       - name: Connect to remote server and deploy
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.eH1_SSH_SERVER }} << 'EOF'
