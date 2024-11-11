@@ -12,18 +12,25 @@ webhook.post("/:id", async (req, res) => {
   }
   switch (id) {
     case "lvuoig67rcoh": // Gumroad
-      const { short_product_id, timestamp, ip_country, cancelled_at } =
-        req.body;
+      const {
+        short_product_id,
+        timestamp,
+        email,
+        subscription_id,
+        sale_timestamp,
+        ip_country,
+        cancelled_at,
+      } = req.body;
       switch (short_product_id) {
         case "ttvvd": // Fixiq
           if (cancelled_at) {
-            await USERS("Fixiq").findOneAndUpdate(
+            await USERS("fixiq").findOneAndUpdate(
               { email },
               { $set: { isActive: false, canceledAt: cancelled_at } },
               { upsert: true }
             );
           } else {
-            USERS.insertOne({
+            USERS("fixiq").insertOne({
               email,
               subscriptionId: subscription_id,
               subscribedAt: sale_timestamp,
@@ -37,13 +44,13 @@ webhook.post("/:id", async (req, res) => {
 
         case "wjzmd": // Shlow
           if (cancelled_at) {
-            await USERS("Shlow").findOneAndUpdate(
+            await USERS("shlow").findOneAndUpdate(
               { email },
               { $set: { isActive: false, canceledAt: cancelled_at } },
               { upsert: true }
             );
           } else {
-            USERS.insertOne({
+            USERS("shlow").insertOne({
               email,
               subscriptionId: subscription_id,
               subscribedAt: sale_timestamp,
