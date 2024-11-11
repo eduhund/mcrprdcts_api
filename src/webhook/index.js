@@ -12,19 +12,32 @@ webhook.post("/:id", async (req, res) => {
   }
   switch (id) {
     case "lvuoig67rcoh": // Gumroad
-      const { short_product_id } = req.body;
+      const { short_product_id, timestamp, ip_country, cancelled_at } =
+        req.body;
       switch (short_product_id) {
         case "ttvvd": // Fixiq
-          const {
-            email,
-            subscription_id,
-            sale_timestamp,
-            ip_country,
-            cancelled_at,
-          } = req.body;
-
           if (cancelled_at) {
-            await USERS.findOneAndUpdate(
+            await USERS("Fixiq").findOneAndUpdate(
+              { email },
+              { $set: { isActive: false, canceledAt: cancelled_at } },
+              { upsert: true }
+            );
+          } else {
+            USERS.insertOne({
+              email,
+              subscriptionId: subscription_id,
+              subscribedAt: sale_timestamp,
+              country: ip_country,
+              isActive: true,
+            });
+          }
+
+          res.sendStatus(200);
+          return;
+
+        case "wjzmd": // Shlow
+          if (cancelled_at) {
+            await USERS("Shlow").findOneAndUpdate(
               { email },
               { $set: { isActive: false, canceledAt: cancelled_at } },
               { upsert: true }

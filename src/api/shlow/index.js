@@ -2,9 +2,9 @@ import { Router } from "express";
 
 import { USERS } from "../../services/mongo/collections.js";
 
-const fixiq = Router();
+const shlow = Router();
 
-fixiq.get("/check_subscription", async (req, res) => {
+shlow.get("/check_subscription", async (req, res) => {
   const { user_id, email } = req.query;
 
   function sendResponse(user) {
@@ -21,7 +21,7 @@ fixiq.get("/check_subscription", async (req, res) => {
   }
 
   if (email) {
-    const user = await USERS("fixiq").findOneAndUpdate(
+    const user = await USERS("shlow").findOneAndUpdate(
       { email },
       {
         $set: {
@@ -32,10 +32,10 @@ fixiq.get("/check_subscription", async (req, res) => {
 
     sendResponse(user);
   } else {
-    const user = await USERS("fixiq").findOne({ figmaUserId: user_id });
+    const user = await USERS("shlow").findOne({ figmaUserId: user_id });
 
     sendResponse(user);
   }
 });
 
-export default fixiq;
+export default shlow;
