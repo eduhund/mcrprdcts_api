@@ -53,7 +53,10 @@ export async function newGumroadPayment({
       await updateUser({
         query: { email, "products.id": productId },
         data: {
-          $set: { "products.$": { isActive: false, end: cancelled_at } },
+          $set: {
+            "products.$.isActive": false,
+            "products.$.end": cancelled_at,
+          },
         },
       });
     } else {
