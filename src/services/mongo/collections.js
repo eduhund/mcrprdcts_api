@@ -5,9 +5,9 @@ const databases = {
   shlow: db.db("shlow"),
 };
 
-export function USERS(database) {
+export function USERS() {
   try {
-    return databases[database].collection("users");
+    return db.db("main").collection("users");
   } catch {
     throw new Error();
   }
