@@ -16,20 +16,20 @@ export default async function (req, res) {
   }
 
   const { products = [] } = user;
-  const productState = products.findOne((product) => product.id === product_id);
+  const productState = products.find((product) => product.id === product_id);
 
   res.json({ access: Boolean(productState?.isActive) });
 
   if (email) {
-    updateUser(
-      { email },
-      {
+    updateUser({
+      query: { email },
+      data: {
         $set: {
           figma: {
             userId: user_id,
           },
         },
-      }
-    );
+      },
+    });
   }
 }
