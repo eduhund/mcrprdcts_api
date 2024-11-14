@@ -1,13 +1,9 @@
+import { getProductByPaymentGateway } from "../../services/mongo/requests/getProduct/getProduct.js";
 import {
   addUser,
   getUserByEmail,
   updateUser,
 } from "../../services/mongo/requests/index.js";
-
-const MATCH_ID = {
-  ttvvd: "FXQ",
-  wjzmd: "SLW",
-};
 
 export async function newGumroadPayment({
   short_product_id,
@@ -21,7 +17,10 @@ export async function newGumroadPayment({
   cancelled_at,
   custom_fields,
 }) {
-  const productId = MATCH_ID[short_product_id];
+  const { id: productId } = await getProductByPaymentGateway(
+    "gumroad",
+    short_product_id
+  );
   if (!productId) {
     throw new Error("Unknown product ID");
   }
@@ -61,7 +60,7 @@ export async function newGumroadPayment({
       });
     } else {
       await updateUser({
-        query: { email },
+        query: { email, "products.id": { $ne: productId } },
         data: {
           $addToSet: {
             products: {

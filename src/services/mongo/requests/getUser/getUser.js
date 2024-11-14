@@ -7,5 +7,5 @@ export function getUser({ query, params }) {
 }
 
 export function getUserByEmail(email) {
-  return getUser({ email });
+  return getUser({ query: { email } });
 }
