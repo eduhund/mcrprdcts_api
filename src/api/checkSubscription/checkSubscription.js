@@ -8,28 +8,26 @@ export default async function (req, res) {
     return;
   }
 
-  const user = await getUser({ "figma.userId": user_id });
+  let user = {};
 
-  if (!user) {
-    res.sendStatus(400);
-    return;
+  if (email) {
+    user =
+      (await updateUser({
+        query: { email },
+        data: {
+          $set: {
+            figma: {
+              userId: user_id,
+            },
+          },
+        },
+      })) || {};
+  } else {
+    user = (await getUser({ "figma.userId": user_id })) || {};
   }
 
   const { products = [] } = user;
   const productState = products.find((product) => product.id === product_id);
 
   res.json({ access: Boolean(productState?.isActive) });
-
-  if (email) {
-    updateUser({
-      query: { email },
-      data: {
-        $set: {
-          figma: {
-            userId: user_id,
-          },
-        },
-      },
-    });
-  }
 }
